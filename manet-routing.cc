@@ -489,11 +489,16 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
     onoff1.SetAttribute ("Remote", remoteAddress3);
 
     Ptr<UniformRandomVariable> var = CreateObject<UniformRandomVariable> ();
-    ApplicationContainer temp = onoff1.Install (adhocNodes1.Get (i + nSinks));
-    ApplicationContainer temp = onoff1.Install (adhocNodes2.Get (i + nSinks));
-    ApplicationContainer temp = onoff1.Install (adhocNodes3.Get (i + nSinks));
-    temp.Start (Seconds (var->GetValue (100.0,101.0)));
-    temp.Stop (Seconds (TotalTime));
+    ApplicationContainer temp1 = onoff1.Install (adhocNodes1.Get (i + nSinks));
+    ApplicationContainer temp2 = onoff1.Install (adhocNodes2.Get (i + nSinks));
+    ApplicationContainer temp3 = onoff1.Install (adhocNodes3.Get (i + nSinks));
+    temp1.Start (Seconds (var->GetValue (100.0,101.0)));
+    temp1.Stop (Seconds (TotalTime));
+    temp2.Start (Seconds (var->GetValue (100.0,101.0)));
+    temp2.Stop (Seconds (TotalTime));
+    temp3.Start (Seconds (var->GetValue (100.0,101.0)));
+    temp3.Stop (Seconds (TotalTime));
+
   }
 
   std::stringstream ss;
