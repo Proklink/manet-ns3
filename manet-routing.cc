@@ -245,7 +245,7 @@ main(int argc, char *argv[])
   out.close();
 
   int nSinks = 7;
-  double txp = 6.5;
+  double txp = 9.5;
 
   experiment.Run(nSinks, txp, CSVfileName);
 }
@@ -282,7 +282,7 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
   NodeContainer adhocNodes2;
   adhocNodes2.Create(15);
   NodeContainer adhocNodes3;
-  adhocNodes3.Create(15);
+  adhocNodes3.Create(16);
   NodeContainer staNodes;
 
   staNodes.Create(nSta);
@@ -320,9 +320,8 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
   ObjectFactory pos1, pos2, pos3;
 
 // pos for sta node 1 -----------------------------------------------------------------------------------
-  //объект positionAlloc1 позиции (320.0, 1000.0)
   Ptr<ListPositionAllocator> positionAlloc1 = CreateObject<ListPositionAllocator>();	
-  positionAlloc1->Add(Vector(1200.0, 750.0, 0.0));
+  positionAlloc1->Add(Vector(1300.0, 600.0, 0.0));
 
   staMobility.SetPositionAllocator(positionAlloc1);
   //mobility1.SetMobilityModel("ns3:ConstantPositionMobilityModel");
@@ -330,8 +329,8 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
 //-----------------------------------------------------------------------------------------------
 // pos1, taPositionAlloc1, adhocNodes1 -----------------------------------------------------------------
   pos1.SetTypeId("ns3::RandomRectanglePositionAllocator");
-  pos1.Set("X", StringValue("ns3::UniformRandomVariable[Min=1100.0|Max=1250.0]"));
-  pos1.Set("Y", StringValue("ns3::UniformRandomVariable[Min=600.0|Max=700.0]"));
+  pos1.Set("X", StringValue("ns3::UniformRandomVariable[Min=1000.0|Max=1500.0]"));
+  pos1.Set("Y", StringValue("ns3::UniformRandomVariable[Min=300.0|Max=500.0]"));
 
   Ptr<PositionAllocator> taPositionAlloc1 = pos1.Create()->GetObject<PositionAllocator>();
   streamIndex += taPositionAlloc1->AssignStreams(streamIndex);
@@ -351,7 +350,7 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
 // -------------------------------------------------------------------------------------------------
 // pos for sta node 2 -----------------------------------------------------------------------------------
   Ptr<ListPositionAllocator> positionAlloc2 = CreateObject<ListPositionAllocator>();	
-  positionAlloc2->Add(Vector(1150.0, 750.0, 0.0));
+  positionAlloc2->Add(Vector(1170.0, 750.0, 0.0));
   
   staMobility.SetPositionAllocator(positionAlloc2);
   //mobility.SetMobilityModel("ns3:ConstantPositionMobilityModel");
@@ -359,8 +358,8 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
 //-----------------------------------------------------------------------------------
 // pos2, taPositionAlloc2, adhocNodes2 -----------------------------------------------------------------
   pos2.SetTypeId("ns3::RandomRectanglePositionAllocator");
-  pos2.Set("X", StringValue("ns3::UniformRandomVariable[Min=900.0|Max=1070.0]"));
-  pos2.Set("Y", StringValue("ns3::UniformRandomVariable[Min=700.0|Max=800.0]"));
+  pos2.Set("X", StringValue("ns3::UniformRandomVariable[Min=800.0|Max=1100.0]"));
+  pos2.Set("Y", StringValue("ns3::UniformRandomVariable[Min=600.0|Max=1100.0]"));
 
   Ptr<PositionAllocator> taPositionAlloc2 = pos2.Create()->GetObject<PositionAllocator>();
   streamIndex += taPositionAlloc2->AssignStreams(streamIndex);
@@ -375,7 +374,7 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
 // -------------------------------------------------------------------------------------------------
 // pos for sta node 3 -----------------------------------------------------------------------------------
   Ptr<ListPositionAllocator> positionAlloc3 = CreateObject<ListPositionAllocator>();	
-  positionAlloc3->Add(Vector(1200.0, 800.0, 0.0));
+  positionAlloc3->Add(Vector(1300.0, 900.0, 0.0));
   
   staMobility.SetPositionAllocator(positionAlloc3);
   //mobility.SetMobilityModel("ns3:ConstantPositionMobilityModel");
@@ -383,8 +382,8 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
 //-----------------------------------------------------------------------------------
 // pos3, taPositionAlloc3, adhocNodes3 -----------------------------------------------------------------
   pos3.SetTypeId("ns3::RandomRectanglePositionAllocator");
-  pos3.Set("X", StringValue("ns3::UniformRandomVariable[Min=1170.0|Max=1300.0]"));
-  pos3.Set("Y", StringValue("ns3::UniformRandomVariable[Min=810.0|Max=900.0]"));
+  pos3.Set("X", StringValue("ns3::UniformRandomVariable[Min=1100.0|Max=1500.0]"));
+  pos3.Set("Y", StringValue("ns3::UniformRandomVariable[Min=1000.0|Max=1200.0]"));
 
   Ptr<PositionAllocator> taPositionAlloc3 = pos3.Create()->GetObject<PositionAllocator>();
   streamIndex += taPositionAlloc3->AssignStreams(streamIndex);
@@ -404,7 +403,7 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
 
 // pos for sta node 4 -----------------------------------------------------------------------------------
   Ptr<ListPositionAllocator> positionAlloc4 = CreateObject<ListPositionAllocator>();	
-  positionAlloc4->Add(Vector(1200.0, 750.0, 0.0));
+  positionAlloc4->Add(Vector(1300.0, 750.0, 0.0));
   
   staMobility.SetPositionAllocator(positionAlloc4);
   //mobility.SetMobilityModel("ns3:ConstantPositionMobilityModel");
@@ -467,9 +466,9 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
   
   ipv4.SetBase("10.1.1.0", "255.255.255.0");
   interfaces1 = ipv4.Assign(adhoc1Devices);
-  interfaces2 = ipv4.Assign(adhoc2Devices);
-  interfaces3 = ipv4.Assign(adhoc3Devices);
-  staInterfaces = ipv4.Assign(staDevices);
+  // interfaces2 = ipv4.Assign(adhoc2Devices);
+  // interfaces3 = ipv4.Assign(adhoc3Devices);
+  // staInterfaces = ipv4.Assign(staDevices);
   
   OnOffHelper onoff1 ("ns3::UdpSocketFactory",Address ());
   onoff1.SetAttribute ("OnTime", StringValue ("ns3::ConstantRandomVariable[Constant=1.0]"));
@@ -478,26 +477,26 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
   for (int i = 0; i < nSinks; i++)
   {
     Ptr<Socket> sink1 = SetupPacketReceive (interfaces1.GetAddress (i), adhocNodes1.Get (i));
-    Ptr<Socket> sink2 = SetupPacketReceive (interfaces2.GetAddress (i), adhocNodes2.Get (i));
-    Ptr<Socket> sink3 = SetupPacketReceive (interfaces3.GetAddress (i), adhocNodes3.Get (i));
+    // Ptr<Socket> sink2 = SetupPacketReceive (interfaces2.GetAddress (i), adhocNodes2.Get (i));
+    // Ptr<Socket> sink3 = SetupPacketReceive (interfaces3.GetAddress (i), adhocNodes3.Get (i));
 
     AddressValue remoteAddress1 (InetSocketAddress (interfaces1.GetAddress (i), port));
-    AddressValue remoteAddress2 (InetSocketAddress (interfaces2.GetAddress (i), port));
-    AddressValue remoteAddress3 (InetSocketAddress (interfaces3.GetAddress (i), port));
+    // AddressValue remoteAddress2 (InetSocketAddress (interfaces2.GetAddress (i), port));
+    // AddressValue remoteAddress3 (InetSocketAddress (interfaces3.GetAddress (i), port));
     onoff1.SetAttribute ("Remote", remoteAddress1);
-    onoff1.SetAttribute ("Remote", remoteAddress2);
-    onoff1.SetAttribute ("Remote", remoteAddress3);
+    // onoff1.SetAttribute ("Remote", remoteAddress2);
+    // onoff1.SetAttribute ("Remote", remoteAddress3);
 
     Ptr<UniformRandomVariable> var = CreateObject<UniformRandomVariable> ();
     ApplicationContainer temp1 = onoff1.Install (adhocNodes1.Get (i + nSinks));
-    ApplicationContainer temp2 = onoff1.Install (adhocNodes2.Get (i + nSinks));
-    ApplicationContainer temp3 = onoff1.Install (adhocNodes3.Get (i + nSinks));
+    // ApplicationContainer temp2 = onoff1.Install (adhocNodes2.Get (i + nSinks));
+    // ApplicationContainer temp3 = onoff1.Install (adhocNodes3.Get (i + nSinks));
     temp1.Start (Seconds (var->GetValue (100.0,101.0)));
     temp1.Stop (Seconds (TotalTime));
-    temp2.Start (Seconds (var->GetValue (100.0,101.0)));
-    temp2.Stop (Seconds (TotalTime));
-    temp3.Start (Seconds (var->GetValue (100.0,101.0)));
-    temp3.Stop (Seconds (TotalTime));
+    // temp2.Start (Seconds (var->GetValue (100.0,101.0)));
+    // temp2.Stop (Seconds (TotalTime));
+    // temp3.Start (Seconds (var->GetValue (100.0,101.0)));
+    // temp3.Stop (Seconds (TotalTime));
 
   }
 
