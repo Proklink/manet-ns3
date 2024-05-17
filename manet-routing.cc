@@ -470,62 +470,31 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
   interfaces2 = ipv4.Assign(adhoc2Devices);
   interfaces3 = ipv4.Assign(adhoc3Devices);
   staInterfaces = ipv4.Assign(staDevices);
-  // ipv4.SetBase("10.1.2.0", "255.255.255.0");
-  // interfaces1 = ipv4.Assign(devices2);
+  
+  OnOffHelper onoff1 ("ns3::UdpSocketFactory",Address ());
+  onoff1.SetAttribute ("OnTime", StringValue ("ns3::ConstantRandomVariable[Constant=1.0]"));
+  onoff1.SetAttribute ("OffTime", StringValue ("ns3::ConstantRandomVariable[Constant=0.0]"));
 
-  // ipv4.SetBase("10.1.3.0", "255.255.255.0");
-  // interfaces1 = ipv4.Assign(devices3);
+  for (int i = 0; i < nSinks; i++)
+  {
+    Ptr<Socket> sink1 = SetupPacketReceive (interfaces1.GetAddress (i), adhocNodes1.Get (i));
+    Ptr<Socket> sink2 = SetupPacketReceive (interfaces2.GetAddress (i), adhocNodes2.Get (i));
+    Ptr<Socket> sink3 = SetupPacketReceive (interfaces3.GetAddress (i), adhocNodes3.Get (i));
 
-  //Create one udpServer applications on 10.1.1.2
-  uint16_t port_1 = 4000, port_2 = 2000;
-  UdpServerHelper server_1(port_1), server_2(port_2);
-  ApplicationContainer apps_1 = server_1.Install(staNodes.Get(1));
-  apps_1.Start (Seconds (100.0));
+    AddressValue remoteAddress1 (InetSocketAddress (interfaces1.GetAddress (i), port));
+    AddressValue remoteAddress2 (InetSocketAddress (interfaces2.GetAddress (i), port));
+    AddressValue remoteAddress3 (InetSocketAddress (interfaces3.GetAddress (i), port));
+    onoff1.SetAttribute ("Remote", remoteAddress1);
+    onoff1.SetAttribute ("Remote", remoteAddress2);
+    onoff1.SetAttribute ("Remote", remoteAddress3);
 
-  // Create one UdpClient application to send UDP datagrams from 10.1.1.1 to 10.1.1.2.
-  uint32_t MaxPacketSize = 128;
-  Time interPacketInterval = Seconds (0.001);
-  uint32_t maxPacketCount = 4000;
-
-  UdpClientHelper client_1(staInterfaces.GetAddress(0), port_2);
-  client_1.SetAttribute ("MaxPackets", UintegerValue(maxPacketCount));
-  client_1.SetAttribute ("Interval", TimeValue (interPacketInterval));
-  client_1.SetAttribute ("PacketSize", UintegerValue (MaxPacketSize));
-
-  apps_1 = client_1.Install(adhocNodes1.Get(0));
-  apps_1 = client_1.Install(adhocNodes1.Get(1));
-  apps_1 = client_1.Install(adhocNodes1.Get(2));
-  apps_1.Start (Seconds (100.0));
-
-  ApplicationContainer apps_2 = server_2.Install(staNodes.Get(0));
-  apps_2.Start (Seconds (100.0));
-
-  UdpClientHelper client_2(staInterfaces.GetAddress(1), port_1);
-  client_2.SetAttribute ("MaxPackets", UintegerValue(maxPacketCount));
-  client_2.SetAttribute ("Interval", TimeValue (interPacketInterval));
-  client_2.SetAttribute ("PacketSize", UintegerValue (MaxPacketSize));
-
-  apps_2 = client_2.Install(staNodes.Get(0));
-  apps_2.Start (Seconds (100.0));
-
-  // OnOffHelper onoff1("ns3::UdpSocketFactory",Address());
-  // onoff1.SetAttribute("OnTime", StringValue("ns3::ConstantRandomVariable[Constant=1.0]"));
-  // onoff1.SetAttribute("OffTime", StringValue("ns3::ConstantRandomVariable[Constant=0.0]"));
-
-  // for (int i = 0; i < nSinks; i++)
-  //   {
-  //     // Ptr<Socket> sink = SetupPacketReceive (adhocInterfaces.GetAddress (i), adhocNodes.Get (i));
-
-  //     // AddressValue remoteAddress (InetSocketAddress (adhocInterfaces.GetAddress (i), port));
-  //     // onoff1.SetAttribute ("Remote", remoteAddress);
-
-  //     // Ptr<UniformRandomVariable> var = CreateObject<UniformRandomVariable> ();
-  //     ApplicationContainer temp = onoff1.Install (c.Get (i + nSinks));
-  //     temp.Start (Seconds (100.0));
-  //     temp.Stop (Seconds (TotalTime));
-  //   }
-  apps_1.Stop (Seconds(TotalTime));
-  apps_2.Stop (Seconds(TotalTime));
+    Ptr<UniformRandomVariable> var = CreateObject<UniformRandomVariable> ();
+    ApplicationContainer temp = onoff1.Install (adhocNodes1.Get (i + nSinks));
+    ApplicationContainer temp = onoff1.Install (adhocNodes2.Get (i + nSinks));
+    ApplicationContainer temp = onoff1.Install (adhocNodes3.Get (i + nSinks));
+    temp.Start (Seconds (var->GetValue (100.0,101.0)));
+    temp.Stop (Seconds (TotalTime));
+  }
 
   std::stringstream ss;
   ss << nWifis;
