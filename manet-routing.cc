@@ -260,7 +260,7 @@ RoutingExperiment::Run(int nSinks, double txp, std::string CSVfileName)
   m_txp = txp;
   m_CSVfileName = CSVfileName;
 
-  int nWifis = 90, nSta = 4;
+  int nWifis = 50, nSta = 4;
 
   double TotalTime = 100.0;
   std::string rate("2048bps");
