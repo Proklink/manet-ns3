@@ -244,7 +244,7 @@ main(int argc, char *argv[])
   std::endl;
   out.close();
 
-  int nSinks = 40;
+  int nSinks = 7;
   double txp = 6.5;
 
   experiment.Run(nSinks, txp, CSVfileName);
